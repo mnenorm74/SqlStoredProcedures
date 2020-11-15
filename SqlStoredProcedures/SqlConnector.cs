@@ -5,9 +5,11 @@ namespace SqlStoredProcedures
 {
     public class SqlConnector
     {
+        private SqlConnection connection;
+
         public void StartSqlInteraction(string connectionString)
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (connection = new SqlConnection(connectionString))
             {
                 try
                 {
@@ -18,6 +20,7 @@ namespace SqlStoredProcedures
                     Console.WriteLine("Не удалось установить подключение к БД");
                     return;
                 }
+
                 ShowMenu();
             }
         }
@@ -37,12 +40,13 @@ namespace SqlStoredProcedures
             var parsed = int.TryParse(input, out var number);
             return parsed ? number : 0;
         }
-        
+
         private void ExecuteMenuPoint(int number)
         {
             switch (number)
             {
                 case 1:
+                    ExecuteFirstPoint();
                     break;
                 case 2:
                     break;
@@ -55,6 +59,31 @@ namespace SqlStoredProcedures
                     Console.WriteLine("Введено некорректное значение!");
                     ShowMenu();
                     break;
+            }
+        }
+
+        private void ExecuteFirstPoint()
+        {
+            Console.Clear();
+            Console.WriteLine("Введите запрос:");
+            var query = Console.ReadLine();
+            ExecuteQuery(query);
+        }
+
+        private void ExecuteQuery(string query)
+        {
+            var command = new SqlCommand(query, connection);
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var elementNumber = reader.FieldCount;
+                    for (var i = 0; i < elementNumber; i++)
+                    {
+                        Console.Write($"{reader[i]}\t");
+                    }
+                    Console.WriteLine();
+                }
             }
         }
     }
