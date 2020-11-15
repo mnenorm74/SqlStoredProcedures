@@ -24,11 +24,5 @@ namespace SqlStoredProcedures
         {
             return $"select count(*) from {tableName}";
         }
-
-        //Полная выручка
-        public static string GetProceeds()
-        {
-            return "sum(ytd_sales*price) from titles";
-        }
     }
 }

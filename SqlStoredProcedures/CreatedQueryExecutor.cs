@@ -20,7 +20,6 @@ namespace SqlStoredProcedures
             Console.WriteLine("1. Вывести всех авторов из заданного города");
             Console.WriteLine("2. Вывести имя и фамилия автора и название книги по id книги");
             Console.WriteLine("3. Вывести количество строк заданной таблицы");
-            Console.WriteLine("4. Вывести полную выручку по всем книгам");
         }
         
         private static void ExecuteMenuPoint(int number)
@@ -41,9 +40,6 @@ namespace SqlStoredProcedures
                     Console.WriteLine("Введите название таблицы, например, authors");
                     var name = Console.ReadLine();
                     QueryExecutor.ExecuteQuery(SqlQueries.GetLinesCount(name), sqlConnection);
-                    break;
-                case 4:
-                    QueryExecutor.ExecuteQuery(SqlQueries.GetProceeds(), sqlConnection);
                     break;
                 default:
                     Console.Clear();

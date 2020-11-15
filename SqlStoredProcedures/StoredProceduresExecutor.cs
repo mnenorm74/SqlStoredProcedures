@@ -18,6 +18,7 @@ namespace SqlStoredProcedures
         {
             Console.Clear();
             Console.WriteLine("1. Вывести всех авторов и информацию о них");
+            Console.WriteLine("2. Вывести цену на заданную книгу");
         }
         
         private static void ExecuteThirdMenuPoint(in int number)
@@ -26,6 +27,11 @@ namespace SqlStoredProcedures
             {
                 case 1:
                     QueryExecutor.ExecuteQuery(SqlProcedures.GetAuthors(), sqlConnection);
+                    break;
+                case 2:
+                    Console.WriteLine("Введите название книги, например, Net Etiquette");
+                    var name = Console.ReadLine();
+                    QueryExecutor.ExecuteQuery(SqlProcedures.GetPrice(name), sqlConnection);
                     break;
                 default:
                     Console.Clear();

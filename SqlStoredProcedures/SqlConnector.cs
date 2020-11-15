@@ -27,8 +27,8 @@ namespace SqlStoredProcedures
 
         private void ShowMenu()
         {
-            Console.WriteLine("1. Выбрать существующую хранимую процедуру");
-            Console.WriteLine("2. Выбрать существующий запрос");
+            Console.WriteLine("1. Выбрать существующий запрос");
+            Console.WriteLine("2. Выбрать существующую хранимую процедуру");
             Console.WriteLine("3. Выполнить свой запрос");
             Console.WriteLine("4. Выход");
             var number = IntParser.GetInputOrZero(Console.ReadLine());
@@ -40,10 +40,10 @@ namespace SqlStoredProcedures
             switch (number)
             {
                 case 1:
-                    StoredProceduresExecutor.Start(connection);
+                    CreatedQueryExecutor.Start(connection);
                     break;
                 case 2:
-                    CreatedQueryExecutor.Start(connection);
+                    StoredProceduresExecutor.Start(connection);
                     break;
                 case 3:
                     UserQueryExecutor.Start(connection);

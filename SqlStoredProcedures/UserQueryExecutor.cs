@@ -12,7 +12,5 @@ namespace SqlStoredProcedures
             var query = Console.ReadLine();
             QueryExecutor.ExecuteQuery(query, connection);
         }
-        
-        
     }
 }
