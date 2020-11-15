@@ -52,6 +52,7 @@ namespace SqlStoredProcedures
                     ExecuteSecondPoint();
                     break;
                 case 3:
+                    ExecuteThirdPoint();
                     break;
                 case 4:
                     Console.Clear();
@@ -128,6 +129,34 @@ namespace SqlStoredProcedures
                     break;
             }
         }
-        
+
+        private void ExecuteThirdPoint()
+        {
+            ShowThirdPointMenu();
+            var number = GetInputOrZero(Console.ReadLine());
+            ExecuteThirdMenuPoint(number);
+            BackToMenu();
+        }
+
+        private void ExecuteThirdMenuPoint(in int number)
+        {
+            switch (number)
+            {
+                case 1: 
+                    ExecuteQuery(SqlQueries.GetAuthors());
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Введено некорректное значение!");
+                    ShowThirdPointMenu();
+                    break;
+            }
+        }
+
+        private void ShowThirdPointMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("1. Вывести всех авторов и информацию о них");
+        }
     }
 }
