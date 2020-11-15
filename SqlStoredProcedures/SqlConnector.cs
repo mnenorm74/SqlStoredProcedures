@@ -31,14 +31,8 @@ namespace SqlStoredProcedures
             Console.WriteLine("2. Выбрать существующий запрос");
             Console.WriteLine("3. Выбрать существующую хранимую процедуру");
             Console.WriteLine("4. Выход");
-            var number = GetInputOrZero(Console.ReadLine());
+            var number = IntParser.GetInputOrZero(Console.ReadLine());
             ExecuteMenuPoint(number);
-        }
-
-        private int GetInputOrZero(string input)
-        {
-            var parsed = int.TryParse(input, out var number);
-            return parsed ? number : 0;
         }
 
         private void ExecuteMenuPoint(int number)
@@ -46,13 +40,13 @@ namespace SqlStoredProcedures
             switch (number)
             {
                 case 1:
-                    ExecuteFirstPoint();
+                    UserQueryExecutor.Start(connection);
                     break;
                 case 2:
-                    ExecuteSecondPoint();
+                    CreatedQueryExecutor.Start(connection);
                     break;
                 case 3:
-                    ExecuteThirdPoint();
+                    StoredProceduresExecutor.Start(connection);
                     break;
                 case 4:
                     Console.Clear();
@@ -60,9 +54,10 @@ namespace SqlStoredProcedures
                 default:
                     Console.Clear();
                     Console.WriteLine("Введено некорректное значение!");
-                    ShowMenu();
                     break;
             }
+
+            BackToMenu();
         }
 
         private void BackToMenu()
@@ -71,92 +66,6 @@ namespace SqlStoredProcedures
             Console.ReadKey();
             Console.Clear();
             ShowMenu();
-        }
-        
-        private void ExecuteFirstPoint()
-        {
-            Console.Clear();
-            Console.WriteLine("Введите запрос:");
-            var query = Console.ReadLine();
-            ExecuteQuery(query);
-            BackToMenu();
-        }
-
-        private void ExecuteQuery(string query)
-        {
-            var command = new SqlCommand(query, connection);
-            using (var reader = command.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    var elementNumber = reader.FieldCount;
-                    for (var i = 0; i < elementNumber; i++)
-                    {
-                        Console.Write($"{reader[i]}\t");
-                    }
-                    Console.WriteLine();
-                }
-            }
-        }
-
-        private void ExecuteSecondPoint()
-        {
-            ShowSecondPointMenu();
-            var number = GetInputOrZero(Console.ReadLine());
-            ExecuteSecondMenuPoint(number);
-            BackToMenu();
-        }
-
-        private void ShowSecondPointMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("1. Вывести всех авторов из заданного города");
-        }
-
-        private void ExecuteSecondMenuPoint(int number)
-        {
-            switch (number)
-            {
-                case 1: 
-                    Console.WriteLine("Введите город:");
-                    var city = Console.ReadLine();
-                    ExecuteQuery(SqlQueries.GetAuthorsFromCityQuery(city));
-                    break;
-                default:
-                    Console.Clear();
-                    Console.WriteLine("Введено некорректное значение!");
-                    ShowSecondPointMenu();
-                    break;
-            }
-        }
-
-        private void ExecuteThirdPoint()
-        {
-            ShowThirdPointMenu();
-            var number = GetInputOrZero(Console.ReadLine());
-            ExecuteThirdMenuPoint(number);
-            BackToMenu();
-        }
-
-        private void ExecuteThirdMenuPoint(in int number)
-        {
-            switch (number)
-            {
-                case 1: 
-                    ExecuteQuery(SqlQueries.GetAuthors());
-                    break;
-                default:
-                    Console.Clear();
-                    Console.WriteLine("Введено некорректное значение!");
-                    ShowThirdPointMenu();
-                    break;
-            }
-        }
-
-        private void ShowThirdPointMenu()
-        {
-            Console.Clear();
-            Console.WriteLine("1. Вывести всех авторов и информацию о них");
         }
     }
 }

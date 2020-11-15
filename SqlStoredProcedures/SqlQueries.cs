@@ -6,10 +6,5 @@
         {
             return $"select * from authors where city = '{city}'";
         }
-
-        public static string GetAuthors()
-        {
-            return "exec GetAuthors";
-        }
     }
 }
