@@ -49,11 +49,13 @@ namespace SqlStoredProcedures
                     ExecuteFirstPoint();
                     break;
                 case 2:
+                    ExecuteSecondPoint();
                     break;
                 case 3:
                     break;
                 case 4:
-                    break;
+                    Console.Clear();
+                    return;
                 default:
                     Console.Clear();
                     Console.WriteLine("Введено некорректное значение!");
@@ -62,12 +64,21 @@ namespace SqlStoredProcedures
             }
         }
 
+        private void BackToMenu()
+        {
+            Console.WriteLine("Нажмите любую клавишу для перехода в меню");
+            Console.ReadKey();
+            Console.Clear();
+            ShowMenu();
+        }
+        
         private void ExecuteFirstPoint()
         {
             Console.Clear();
             Console.WriteLine("Введите запрос:");
             var query = Console.ReadLine();
             ExecuteQuery(query);
+            BackToMenu();
         }
 
         private void ExecuteQuery(string query)
@@ -86,5 +97,37 @@ namespace SqlStoredProcedures
                 }
             }
         }
+
+        private void ExecuteSecondPoint()
+        {
+            ShowSecondPointMenu();
+            var number = GetInputOrZero(Console.ReadLine());
+            ExecuteSecondMenuPoint(number);
+            BackToMenu();
+        }
+
+        private void ShowSecondPointMenu()
+        {
+            Console.Clear();
+            Console.WriteLine("1. Вывести всех авторов из заданного города");
+        }
+
+        private void ExecuteSecondMenuPoint(int number)
+        {
+            switch (number)
+            {
+                case 1: 
+                    Console.WriteLine("Введите город:");
+                    var city = Console.ReadLine();
+                    ExecuteQuery(SqlQueries.GetAuthorsFromCityQuery(city));
+                    break;
+                default:
+                    Console.Clear();
+                    Console.WriteLine("Введено некорректное значение!");
+                    ShowSecondPointMenu();
+                    break;
+            }
+        }
+        
     }
 }
