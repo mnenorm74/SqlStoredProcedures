@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace SqlStoredProcedures
@@ -10,15 +11,26 @@ namespace SqlStoredProcedures
             var command = new SqlCommand(query, connection);
             using (var reader = command.ExecuteReader())
             {
-                while (reader.Read())
+                while (reader.HasRows)
                 {
-                    var elementNumber = reader.FieldCount;
-                    for (var i = 0; i < elementNumber; i++)
-                    {
-                        Console.Write($"{reader[i]}\t");
-                    }
-                    Console.WriteLine();
+                    Print(reader);
+
+                    if (!reader.NextResult())
+                        return;
                 }
+            }
+        }
+
+        private static void Print(IDataReader reader)
+        {
+            while (reader.Read())
+            {
+                var elementNumber = reader.FieldCount;
+                for (var i = 0; i < elementNumber; i++)
+                {
+                    Console.Write($"{reader[i]}\t");
+                }
+                Console.WriteLine();
             }
         }
     }
